@@ -1,0 +1,95 @@
+Summary of the package to install (maybe some are redundant)
+
+sudo apt-get install subversion libpng-dev libnetcdf-dev netcdf-bin netcdf-doc openmpi-bin   libopenmpi-dev openssh-server openssh-client libnetcdff-dev libnetcdff-dbg libnetcdff-doc libnetcdff6 hdf5-tools hdf5-helpers hdf5-tools libhdf5-dev libhdf5-doc libhdf5-mpi-dev libhdf5-openmpich-dev libhdf5-serial-dev
+
+
+##############
+#### NEMO ####
+##############
+sudo apt-get install subversion
+
+
+svn --username <login> co http://forge.ipsl.jussieu.fr/nemo/svn/branches/2015/nemo_v3_6_STABLE/NEMOGCM
+
+
+svn --username <login> co http://forge.ipsl.jussieu.fr/nemo/svn/NEMO/releases/release-3.6/NEMOGCM
+
+######################################
+#### Additional packages required ####
+######################################
+
+sudo apt-get install libpng-dev
+
+sudo apt-get install zlib1g-dev  -> not necessary.
+
+
+sudo apt-get install libnetcdf-dev
+
+sudo apt-get install netcdf-bin
+
+sudo apt-get install netcdf-doc
+
+sudo apt-get install liblam4
+(to get mpi)
+	Also installed :
+	openmpi-bin   libopenmpi-dev  openssh-client and openssh-server
+
+sudo apt-get install gfortran
+
+################
+#### XIOS ######
+################
+
+svn co http://forge.ipsl.jussieu.fr/ioserver/svn/XIOS/trunk xios-2.0
+
+cd xios-2.0/arch/
+#MAKE the FOLLOWING CHANGES: 
+#For gcc >= 5.2  amend the .fcm arch file to add "-D  _GLIBCXX_USE_CXX11_ABI=0" (without the quotes) to the %BASE_CFLAGS  definition.
+#For gcc-7.2  export OMPI_CC=gcc-6
+#Change path in :  XIOS/arch/-GCC_LINUX.env  $home --> /usr
+#                                            /usr/netcdf4/include  --> /usr/include
+
+# Change in XIOS/arch/-GCC_LINUX.fcm   gmake --> make
+#                                      mpif90 -- > mpifort
+#                  Add  -D  _GLIBCXX_USE_CXX11_ABI=0  to %BASE_CFLAGS 
+
+##
+##Go to the apropriate folder and compile
+## 
+cd ..
+./make_xios --netcdf_lib 'netcdf4_seq' --arch GCC_LINUX
+
+######################################
+########
+
+%% netCDF-Fortran
+sudo apt-get install libnetcdff-dev
+
+sudo apt-get install libnetcdff-dbg
+
+sudo apt-get install libnetcdff-doc
+
+sudo apt-get install libnetcdff6
+
+sudo apt-get install libnetcdff-dev libnetcdff-dbg libnetcdff-doc libnetcdff6 hdf5-tools hdf5-helpers hdf5-tools libhdf5-dev libhdf5-doc libhdf5-mpi-dev libhdf5-serial-dev  libhdf5-openmpich-dev
+
+
+%% HDF5
+
+hdf5-helpers (nothing installed)
+hdf5-tools
+libhdf5-dev (nothing installed)
+libhdf5-doc
+libhdf5-mpi-dev
+libhdf5-openmpich-dev
+libhdf5-serial-dev
+
+########################################
+Change in arch-GCC_LINUX.env
+replace HDF5 line
+
+export HDF5_LIB_DIR=/usr/lib/x86_64-linux-gnu/hdf5/openmpi/
+
+#######################################
+
+
