@@ -1,7 +1,7 @@
 # NEMOGCM_AMVRAKIKOS
 The Amvrakikos Modelling project described here.
 
-The current arcitecture of this repository is : 
+The current architecture of this repository is : 
 
 - Explanation on how to install NEMO on your computer. We did it on a blank Ubuntu 16.04 distribution and on the HCMR zorba CLUSTER.
 
