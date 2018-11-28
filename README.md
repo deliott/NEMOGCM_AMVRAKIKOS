@@ -1,6 +1,12 @@
 # NEMOGCM_AMVRAKIKOS
-Files from the master thesis project of modelling the Amvrakikos Gulf with the NEMO Oceanographic Model
+The Amvrakikos Modelling project described here.
 
-One part is dedicated to Installing and setting up NEMOGCM so that it runs on a freshly installed ubuntu distribution.
+The current arcitecture of this repository is : 
 
-The other part is about the Amvrakikos Gulf project itself. 
+- Explanation on how to install NEMO on your computer. We did it on a blank Ubuntu 16.04 distribution and on the HCMR zorba CLUSTER.
+
+- Set of all the matlab code used and written to prepare the input data (bathymetry, grid, ECMWf, ... ) to feed nemo to run configurations
+
+- All the Fortran modules that were modified from the original files provided with NEMO, as well as the different namelists used and their description.
+
+- The scientific report written as a conclusion of this internship.
