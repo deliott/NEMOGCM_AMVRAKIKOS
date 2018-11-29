@@ -1,0 +1,33 @@
+&namlog
+   cn_logfile="coord_out_coarse.log"
+   cn_verbosity='warning'
+   in_maxerror=0
+/
+
+&namcfg
+   cn_varcfg="/home/eliott/NEMO_REF/NEMOGCM/TOOLS/SIREN/cfg/variable.cfg"
+   cn_dimcfg="/home/eliott/NEMO_REF/NEMOGCM/TOOLS/SIREN/cfg/dimension.cfg"
+/
+
+&namcrs
+   cn_coord0="/home/eliott/working_directory/0524_new_test_bath/coordinates_ORCA.nc"
+   in_perio0=1
+/
+
+&namvar
+   cn_varinfo=
+/
+&namnst
+   in_imin0=165
+   in_imax0=168 
+   in_jmin0=103
+   in_jmax0=106
+
+   in_rhoi=50
+   in_rhoj=58
+/
+
+&namout
+   cn_fileout="/home/eliott/working_directory/0524_new_test_bath/coord_coarse_0524.nc"
+/
+

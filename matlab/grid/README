@@ -1,0 +1,8 @@
+To create the grid we used the SIREN package provided by NEMO
+
+The configuration file are  : 
+
+create_coord_coarse.nam
+create_coord_fine.nam
+
+Fine uses coarse's outputs as input

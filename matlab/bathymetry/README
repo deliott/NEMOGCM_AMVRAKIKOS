@@ -1,0 +1,5 @@
+Two progrmas in this folder : 
+create_bathymetry.m for configuration without buffer-zone
+
+create_bathymetry_for_damping.m for configuration withs buffer-zone
+
