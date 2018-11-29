@@ -1,8 +1,62 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% OUTPUT : coordinates.nc %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 To create the grid we used the SIREN package provided by NEMO
+
+The name of the file created here will be coordinates.nc
 
 The configuration file are  : 
 
 create_coord_coarse.nam
 create_coord_fine.nam
 
-Fine uses coarse's outputs as input
+We used : 
+http://forge.ipsl.jussieu.fr/nemo/doxygen/md_src_docsrc_2_quickstart.html
+as a guide.
+
+As opposed to  the tutorial, we created our coordinates.nc file in two steps. That is two say we ran twice the SIREN TOOL. First to get the 
+coord_coarse.nc file
+the to get the 
+coord_fine.nc file
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% I.   Compile the SIREN TOOL   %
+% II.  Modify the .nam files    %
+% III. Create the coarse grid   %
+% IV.  Create the fine Grid     %
+% V.   Possible Issues          %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+_____________________________________________
+
+I. Compile the SIREN TOOL
+
+While in the <path>/NEMOGCM/TOOLS/ folder, do : 
+> ./maketools -m linux -j4  -n SIREN
+
+
+We choose to work with SIREN in a new folder named : TEST
+> mkdir <path>/NEMOGCM/TOOLS/SIREN/TEST
+
+II.  Modify the .nam files 
+
+Adapt the paths in the create_coord_coarse.nam file.
+
+III.  Create the coarse grid
+
+While in the <path>/NEMOGCM/TOOLS/SIREN folder, do :
+
+> <path>/NEMOGCM/TOOLS/SIREN/create_coord.exe create_coord_coarse.nam 
+
+IV. Create the fine Grid 
+
+> <path>/NEMOGCM/TOOLS/SIREN/create_coord.exe create_coord_fine.nam 
+
+
+V.   Possible Issues    
+
+If a problem occur, running : 
+> ulimit -s unlimited 
+can be useful (https://forge.ipsl.jussieu.fr/nemo/discussion/topic/43#message_77)
+
+Be careful to change the name of your output file if you run several time the same line. Otherwise there will be an error. 
