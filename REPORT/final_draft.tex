@@ -1,0 +1,955 @@
+\documentclass[english]{PFeENSTA}
+\usepackage{gensymb}
+\usepackage{float}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% COMPILATION
+%
+% Sur Linux, il suffit de faire make en vous placant dans le dossier.
+%
+% Sur Windows, pour le logiciel Texmaker, il faut configurer la compilation ainsi:
+% Aller dans Options -> Configurer Texmaker -> Commandes
+% Modifier la ligne 'Makeindex' par:
+% makeindex -s %.ist -t %.glg -o %.gls %.glo
+%
+% Une solution encore plus simple est d'utiliser la compilation de Overleaf.com
+% Uploader les fichiers Rapport.tex, Rapport.cls et le dossier image sur overleaf
+% Renommer le fichier Rapport.tex en main.tex
+% Ca devrait compiler tout seul (index et glossaire compris)
+%
+% Il faut ensuite compiler successivement avec:
+% Pdflatex -> Bibtex -> MakeIndex -> Pdflatex -> Pdflatex
+% 
+% BIBLIOGRAPHIE
+%
+% Pour remplir la bibliographie, remplir le fichier biblio.bib
+% Pour citer une source, mettre \cite{reference} (seuls
+% les textes cités seront ajoutés à la bibliographie, le biblio.bib
+% vous sert de bibliothèque)
+%
+% INDEX
+%
+% Pour rajouter un mot à l'index, il suffit d'entrer la commande \index{mot}
+% Si vous voulez que l'index renvoie vers plusieurs pages, tapez à chaque endroit
+% où vous voulez que l'index renvoie la commande \index{mot}
+%
+% GLOSSAIRE 
+%
+% Pour ajouter un nom au glossaire, il suffit d'entrer la commande 
+% \newglossaryentry{nom}
+% {
+%   name=nom,
+%   description={Donner votre description}
+% }
+% Pour utiliser un renvoi vers le glossaire, utilisez \gls{nom}.
+% Les variantes \Gls, \GLS servent a utiliser les majuscules et pluriels
+%
+% LANGUE DU DOCUMENT
+%
+% Il suffit de mettre la langue souhaitee dans les options de la 
+% classe sur la première ligne (french|english)
+%
+% FIGURES
+%
+% Pour que les figures soient bien prises en compte dans la liste des figures,
+% il faut utiliser les commandes:
+% \begin{figure}
+%	\includegraphics[scale=•]{•}
+%	\caption{•}
+% \end{figure}
+%
+% Idem pour les tables, avec \begin{table}
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\nom{HCMR}
+\logo{img/logo_hcmr.jpg} %Lien vers le logo de l'université où le stage est effectué
+\specialite{Master WAPE - Water Air Pollution and Energy} %Voie de l'étudiant
+\annees{2017-2018} %Année scolaire
+\titre{Extension du laboratoire virtuel LifeWatchGreece Ecological Modeling aux ecosystèmes de lagons.} %Titre du stage
+\soustitre{} %Sous-titre. Laisser vide si pas de sous-titre
+\confidentialite{Rapport non confidentiel et publiable sur Internet} %Texte apparaissant sur la page de garde et dans les bas de page
+\noteConfidentialite{Ce rapport, rédigé par Eliott Dupont, étudiant à l'ENSTA ParisTech sous la tutelle de Christos Arvanitidis, Alkiviadis Kalampokis et George Petihakis, chercheurs au HCMR (Hellenic Center for Marine Research), est non-confidentiel et peut \^etre publié sur Internet.\\
+Les codes associés à ce rapport peuvent être utilisés librement.} %Texte apparaissant dans la note de confidentialité en page 3
+\auteur{Eliott DUPONT} %Nom de l'étudiant
+\promotion{2018} %Promotion
+\tuteurENSTA{Laurent MORTIER} %Tuteur de l'étudiant à l'ENSTA
+\tuteurOrganisme{Christos ARVANITIDIS} %Tuteur de l'étudiant dans l'université d'accueil
+\dateDebut{23 Avril 2018} %Date de début du stage
+\dateFin{28 Septembre 2018} %Date de fin du stage
+\organisme{HCMR - Hellenic Center for Marine Research} %Organisme accueillant l'étudiant pour le stage
+\adresseOrganisme{Former US Base at Gournes, P.O. Box 2214, 71003, Heraklion, Greece} %Adresse physique de l'organisme
+
+\couverture %Impression de la page de couverture
+
+\pageConfidentialite 
+
+%%%%%%%%%%%%%%%%%%%%%
+% RESUME - ABSTRACT %
+%%%%%%%%%%%%%%%%%%%%%
+\chapterb{Résumé}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rédiger la partie francaise ci-dessous %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Dans ce rapport sont présentés la construction d'un mod\`ele oc\'eanographique du Golfe d'Amvrakikos situ\'e au Nord-Ouest de la Gr\`ece avec NEMO (Nucleus for European Modeling of the Ocean). Le projet est men\'e dans le cadre des laboratoires en lignes de lifewatchgreece.eu (\url{https://www.lifewatchgreece.eu/}). Une attention particuli\`ere est apport\'e a l'explication de la m\'ethode de construction du mod\`ele et sur le r\'egime transitoire. Des r\'esultat de la simulation pour les premiers mois de l'ann\'ee 1987 sont pr\'esent\'es.
+
+
+%%%%%%%%%%%%%%%%%%%
+% Ne pas modifier %
+%%%%%%%%%%%%%%%%%%%
+\vspace{1.5cm}
+\hrule\vspace{0.5pt}
+{\scshape\bfseries\Huge \begin{center}Abstract\end{center}}
+\vspace{0.5pt}\hrule\vspace{1.5cm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%% Partie anglaise à rédiger %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+We present in the report the construction of a ocenographic model for the Amvrakikos Gulf (North-West Greece) with NEMO (Nucleus for European Modeling of the Ocean). The project was carried out in the framework of the lifewatchgreece.eu  Ecological Modeling VLab. (\url{https://www.lifewatchgreece.eu/}).
+The method for building the model and the spin-up phase is particularly emphasized. The result of the simulation for the first months of the year 1987 the are presented. 
+
+
+%%%%%%%%%%%%%%%%%%%
+% Ne pas modifier %
+%%%%%%%%%%%%%%%%%%%
+\vspace{1.5cm}
+\hrule\vspace{0.5pt}
+{\scshape\bfseries\Huge \begin{center}Acknowledgement\end{center}}
+\vspace{0.5pt}\hrule\vspace{1.5cm}
+%%%%%%%%%%%%%%%%%
+% REMERCIEMENTS %
+%%%%%%%%%%%%%%%%%
+%\chapterb{Acknowledgement}
+
+
+We thank Christos Arvanitidis for his help and the opportunity he gave us to come to work in HCMR Crete, and Alkiviadis Kalampokis for his help in the day to day struggles of modeling, Laurent Mortier and the french researchers from LOCEAN for their advice and feedback on our work.
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+% TABLE DES MATIERES %
+%%%%%%%%%%%%%%%%%%%%%%
+\ifthenelse{\equal{\enstaLang}{en}}{
+\renewcommand\contentsname{Table of Contents}
+}{}
+\newgeometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+\tableofcontents
+\newgeometry{top=2cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+%%%%%%%%%%%%%%%%
+% INTRODUCTION %
+%%%%%%%%%%%%%%%%
+\chapterb{Introduction}
+
+Amvrakikos Gulf, also known as Actium Gulf is a shallow water gulf on the West part of Greece. It is the place where on the second of September 32 B.C., Octavian's fleet, commanded by Marcus Vipsanius Agrippa sunk and burned most of Mark Antony's and Cleopatra's fleet. This battle brought a short end to the war for the heritage of Gaius Julius Ceasar. Its uncommon semi-enclosed Gulf topography, provides the gulf with rare oceanograpĥic characteristics. It is expected, for instance, to show properties similar to those of lakes such as an prevalent stratification.  An other consequence of closed topography, caused by the lagoons present on the north bank of the gulf, is that Amvrakikos hosts a rare ecosystem. An ecosystem vulnerable to concentration of pollutants {being trapped in the gulf. 
+
+The gulf is the arena of  different human activities, such as traditional fishing, intensive fish farming, livestock grazing and house construction. The consequences of these activities on the gulf degradation reflect on local economy. For example, the real estate prices around the Gulf are cheaper than those on the nearby Ionian sea coast. It is also a hotspot for biodiversity as the gulf is a refuge place for many reptiles and amphibians, as well as a wintering and reproduction place for numerous waterbirds \cite{RAMSAR}. 
+
+In this document are presented the approach followed to build the Amvrakikos gulf model nearly from scratch, as well as the results and the work that can be done to both improve the physical model and develop the biogeochemical and biological model.
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.7\textwidth]{img/Amvra_0.png}
+\caption{\label{fig:MAP_AMVRA}The Amvrakikos Gulf is on the Northwest side of Greece. It is attached to the Ionian Sea through a narrow straight. }
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+% CORPS DU DOCUMENT %
+%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\chapter{Hydrodynamic Model}
+The NEMO ocean model uses the Navier-Stokes equations as primitive equations in combination with a nonlinear equation of state coupling the fluid velocity to the temperature and salinity. In addition to that a few assumptions are made : the spherical earth approximation, the thin-shell approximation, the turbulent closure hypothesis, the Boussinesq hypothesis, the Hydrostatic hypothesis and the incompressibility hypothesis. 
+
+Using an orthogonal set of unit vector (\textbf{i},\textbf{j},\textbf{k}), with k upward and (\textbf{i},\textbf{j}) tangent to the geopotential surface (\textbf{i} toward East and \textbf{j} toward the North), we have the following set of equations : 
+
+$
+ \begin{cases}
+\frac{\partial \textbf{U}_h}{\partial t} = -[( \nabla\times\textbf{U})\times\textbf{U} + \frac{1}{2} \nabla\textbf{U}^2]_h -j\textbf{k} \times \textbf{U}_h - \frac{1}{\rho_o}  \nabla_h p + \textbf{D}^{\textbf{U}} + \textbf{F}^{\textbf{U}} & (1.1)\\
+ \frac{\partial \textbf{U}_h}{\partial t} = - \rho g & (1.2) \\
+\nabla \cdot \textbf{U} = 0  &  (1.3)\\
+\frac{\partial T}{\partial t}=-\nabla \cdot (T\textbf{U}) + D^T +F^T  &  (1.4)\\
+\frac{\partial S}{\partial t}=-\nabla \cdot (S \textbf{U}) + D^S+F^S   &  (1.5)\\
+\rho = \rho(T,S,p)  &  (1.6)\\
+\end{cases} 
+$
+
+With the fluid velocity $\textbf{U} = \textbf{U}_h + \omega \textbf{k}$, \textit{T} the potential temperature, \textit{S} the salinity, $\rho$ the \textit{in situ} density, \textit{t} the time, \textit{z} the vertical coordinate, \textit{p} the pressure, $ f=2\Omega\cdot k $ the Coriolis acceleration, \textit{g} the gravitational acceleration, $\textbf{D}^\textbf{U}, D^T$ ans $D^S$ the parametrisation of the small-scale physics for momentum, temperature and salinity and $\textbf{F}^\textbf{U}, F^T$ ans $F^S$ the surface-forcing terms.
+
+
+
+\section{Modeling Choices}
+
+%$bld::tool::fppkeys  key_dynspg_ts key_ldfslp  key_zdftke key_diainstant key_mpp_mpi  key_nosignedzero $
+
+\subsection{AMM12}
+
+The first step in the modeling process was, as recommended by the best practices and the tutorial on \url{https://forge.ipsl.jussieu.fr/nemo/wiki/Users}, to build our new configuration upon a reference example provided by NEMO.
+After spending some time studying the different simulations, it was decided to use AMM12 as the reference configuration. It was chosen because it deals with coastal oceanography phenomena and has a lot of realistic inputs (rivers, meteorological forcing, real bathymetry, etc). The GYRE configuration might be insightful for the future developments of the model as it can be set up to use PISCES to model the biochemistry.
+Once able to run and deal with the input of AMM12, a considerable effort was spent to modify it step by step to start the modeling of Amvrakikos Gulf. The Figure \ref{fig:AMM12_SST} shows some results of simulations done with the AMM12 configuration.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/AMM12_SST.png}
+\caption{\label{fig:AMM12_SST}Snapshot of SST from AMM12 reference configuration simulation. }
+\end{figure}
+
+
+\subsection{Bathymetry and grid }
+
+The first step taken to build our model was to create the grid to work on and the corresponding bathymetry of the Gulf.
+The grid file was built with the SIREN package available in NEMO. Nonetheless, the rest of the input files needed to be built manually (with MATLAB) so that they collaborate with our configurations.
+As the raw data provided by former works on the gulf is of the scale of 100 meters, it was chosen to have a grid with approximately the same dimensions. The files used to create the grid with SIREN are available on AMVRAKIKOS folder in the CLUSTER server. 
+The coordinates grid is thus stretching from $20\degree 60$ East to $21\degree 2$ East and $38\degree 9$ North to $39\degree 13$  North with 446 and 319 cells on each dimensions.
+
+The resulting pixels therefore were of approximately 103.14 meters in longitude and 97.18 meters in latitude.
+
+The raw bathymetry data were interpolated on the 100 meters grid to get a .netcdf file readable by NEMO. The Figure \ref{fig:Bathy} shows the output bathymetry first on perspective view and then with depth levels outlined.
+
+
+%\begin{figure}[!h]
+%\centering
+%\includegraphics[width=0.5\textwidth]{img/bathymetry_interpolation0529.jpg}
+%\caption{\label{fig:Level_bathy}Perspective view of the bathymetry followed (top) and  level view of our output bathymetry (bottom). }
+%\end{figure}
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+      \centering
+		\includegraphics[width=0.45\textwidth]{img/bathymetry3d.jpg}
+		\includegraphics[width=0.5\textwidth]{img/bathymetry.jpg}
+   \end{minipage} 
+%   \begin{minipage}[h!]{1\linewidth}
+%   \includegraphics[width=0.5\textwidth]{img/bathymetry.jpg}
+%   \centering
+%   \end{minipage}
+   \caption{\label{fig:Bathy}Perspective view of the bathymetry used in our model (left) and  level view of our output bathymetry (right). }
+
+\end{figure}
+
+For the Z-dimension, the first attempt was made with 15 layers and then switched to 25 layers in order to have a better resolution in the area of the lagoons and of the straight between the Gulf and the Ionian Sea. Modeling the biology in the lagoons is the long term target of this project. Therefore it is important to have more than one layers to describe them. The straight is an important area because it is the only connection between the isolated Gulf and the sea. It is up to 20 meters deep. An attempt was made to have more than 10 layers to describe it.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/vertical_grid_zco_zps.png}
+\caption{\label{fig:verticalGrid}The ocean bottom as seen by the model: (a)z-coordinate with full step,(b)z-coordinate with partial step.}
+\end{figure}
+
+
+The \textit{z}-coordinates with partial step (ln\_zps = true) was chosen for the configuration. It appeared to be the easiest to adapt to the adopted guidelines. The Figure \ref{fig:verticalGrid} shows a comparison between the full-step and partial-step approach for the vertical grid (source : \cite{Madec_Bk08}). We can see that the partial step approach enables us to fit our requierements by adjusting the depth of the layers.
+
+
+The following parameters were  modified to generate our vertical grid : Table \ref{Zparam}
+\begin{table}[!h]
+\begin{center}
+  \begin{tabular}{| l | c | l| }
+    \hline
+     Name of the Parameter & Value & Meaning \\ \hline
+    rn\_hmin & 0.1 & Min depth of the ocean \\ \hline
+    ppkth  & 6.0 &	$	\simeq$ Model level at which maximum stretching occurs \\ \hline
+    ppacr & 8.0 & stretching factor (the smaller, the more stretching) \\ \hline
+    ppdzmin  & 0.3 &	Minimum Vertical Spacing \\ \hline
+    pphmax  & 63. &	Maximum depth \\         
+    \hline
+  \end{tabular}
+\caption{Modified parameters to set up our vertical-coordinates grid}
+\label{Zparam}
+\end{center}
+\end{table}
+
+With these parameters, the vertical grids described in Table \ref{Vmesh} for 15 and 25 layers were obtained. It should be noticed that the last layer is always out of the boundaries of the bathymetry.  
+
+\begin{table}[!h]
+\begin{center}
+  \begin{tabular}{| r | r | r| }
+    \hline
+     Layer N\degree & Depth (15 layers) & Depth (25 layers) \\ \hline
+    1 & 0.21 & 0.17 \\ \hline
+    2 & 1.03 & 0.68 \\ \hline
+    3 & 2.43 & 1.41 \\ \hline
+    4 & 4.45 & 2.39 \\ \hline
+    5 & 7.15 & 3.64 \\ \hline
+    6 & 10.54 & 5.12 \\ \hline
+    7 & 14.63 & 6.95 \\ \hline
+    8 & 19.38 & 9.01 \\ \hline
+    9 & 24.77 & 11.32 \\ \hline
+    10 & 30.73 & 13.86 \\ \hline
+    11 & 37.21  & 16.59 \\ \hline
+    12 & 44.14 & 19.51 \\ \hline
+    13 & 51.45 & 22.58 \\ \hline
+    14 & 59.08 & 25.77 \\ \hline
+    15 & 66.98 & 29.07 \\ \hline
+    16 &  & 32.46 \\ \hline
+    17 &  & 35.91 \\ \hline
+    18 &  & 39.42 \\ \hline
+    19 &  & 42.98 \\ \hline
+    20 &  & 46.57 \\ \hline
+    21 &  & 50.19 \\ \hline
+    22 &  & 53.83 \\ \hline
+    23 &  & 57.49 \\ \hline
+    24 &  & 61.16 \\ \hline
+    25 &  & 64.64 \\ 
+    \hline
+  \end{tabular}
+\caption{Vertical mesh in z-coordinates with partial steps}
+\label{Vmesh}
+\end{center}
+\end{table}
+
+
+\subsection{Lateral Boundaries} 
+
+After creating the grid, the bathymetry and defining the depth of the layers, the boundary conditions on the Ionian Sea were suppressed. In the beginning the work was focused close with the boundaries of the Ionian sea. These boundaries were on the west and south side of our configuration. 
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/closed_boundaries.png}
+\caption{\label{fig:closed_boundaries} The closed boundaries are on the south and west side of our map (on a bathy-level map of the gulf). }
+\end{figure}
+
+The idea behind this choice was to develop the model with closed boundaries and once some progress was achieved try to set up the input with the open boundaries options. Nonetheless, as it is described in the following sections, a different path was chosen. As a consequence, it was not necessary to deal with the open lateral boundaries.
+
+
+\subsection{Free Surface}
+The sea surface height, $\eta$, describes the shape of the interface between the gulf water and the air. It follows the equation $\frac{\partial\eta}{\partial t} = - D + P - E$ where $D = \nabla \cdot [(H + \eta) \overline{\textbf{U}}_h]$ and using the surface pressure given by $P_s = \rho g \eta$.
+As EGW (External Gravity Waves) are not relevent to the case of study, it was chosen not to use a non linear free surface. Instead the linear approximation and the split explicit scheme proposed by NEMO and detailed in \cite{SHCHEPETKIN2005347} were selected. It consist in solving the free surface equation with a smaller timestep than the global one : $\Delta t_e = \Delta t / nn\_baro$. In \texttt{our} configuration, $nn\_baro$ is set automatically by NEMO.
+
+
+
+\subsection{Courant-Friedrich-Levy Condition}
+
+The Courant-Friedrich-Levy Condition was used to determine the maximum timestep possible for the simulations. the CFL condition is necessary for the convergence of the model. It can be expressed as follow :
+\begin{center}
+$C=\frac{u_x \delta t}{\delta x} + \frac{u_y \delta t}{\delta y} \leq C_{max} $
+\end{center}
+
+An implicit solver was used for the free surface (\textbf{key\_dynspg\_flt}). Therefore a $C_{max}$ value of 1 is safe. Given that $\delta x \simeq \delta y \simeq 100 $ meters, $u_x \simeq u_y \simeq 1 m/s $ and according to Courant-Friedriech-Levy condition, a $\delta t $ as big as 50 seconds can be chosen. In practice $\delta t$ equal to 20 seconds was prefered in the beginning. It was later increased up to $\delta t$ equal 30 seconds thanks to a change in the lateral diffusion scheme.  Here the $\delta t$ refers to the rn\_rdt parameter.
+
+The simulations all started on the $1^{st}$ of February 1987. The month of February lasts 28 days. As a consequence, the Table \ref{TIME_TABLE} was used to modify the nn\_itend parameter according to the $\delta t $.
+
+\begin{table}[H]
+\begin{center}
+  \begin{tabular}{| l | r | r| }
+    \hline
+      & 20 seconds & 30 seconds \\ \hline
+    1 hour & 180 & 120 \\ \hline
+    1 day  & 4320 &	2880 \\ \hline
+    1 week & 30240 & 20160 \\ \hline
+    to end of February  & 120960 &	80640 \\ \hline
+    to end of March  & 254880 &	169920 \\ \hline
+    to end of April  & 384480 &	256320\\ \hline
+    One Year Simulation  & 1576800 &	1051200 \\ 
+    \hline
+  \end{tabular}
+  \end{center}
+  \caption{\label{TIME_TABLE} Number of timesteps for different lenghts of simulations}
+\end{table}
+
+\subsection{Bottom Friction - Turbulence Closure Parametrisation - Advection/Diffusion}
+A free slip bottom friction was used on the model (nn\_bfr = 0). 
+
+
+The TKE Turbulent Closure Scheme was used in this model. It is a robust scheme and it is widely used in modeling for vertical closure scheme.
+
+
+For the advection of the tracer, following the advice of Sebastien Masson from LOCEAN,  the Upstream Biased Scheme (UBS) was chosen (ln\_dynadv\_ubs=true). It is good scheme and is convenient as it does not requieres an explicit diffusion scheme. However, the direction of the diffusion was set horizontal horizontal (along the geopotential) (ln\_traldf\_hor = .true.). It is defined in namtra\_ldf.
+
+
+\subsection{Tracer damping : buffer-zone}
+It was decided to reduce the domain of the simulations by suppressing the Ionian sea from the model. There are 5 reasons to explain that choice : 
+\begin{itemize}
+\item in the beginning of the modeling process, the simulations were diverging in this area,
+\item the Ionian sea is not part of the area of study, only the rectangular shape of the grid encouraged its modeling during the firsts stages of the development of the configration, 
+\item it complicates the input on the lateral boundary with two sides to be parametrized, 
+\item suppressing the Ionian sea reduces the amount of computations per time step, 
+\item we have been advised to suppress it
+\end{itemize} 
+
+Therefore we asked Romain Penel from LMD (Laboratoire de Météorologie Dynamique) who has been working on a Mediterranean Sea model with NEMO where the Atlantic was replaced by a buffer-zone around Gibraltar. Following his advice the buffer-zone as seen in Figure \ref{fig:buffer_zone} was implemented.
+
+\begin{figure}[!h]
+\centering
+%\includegraphics[width=0.2\textwidth]{img/buffer.png}
+\includegraphics[width=0.5\textwidth]{img/map_resto.jpg}
+\caption{\label{fig:buffer_zone} Picture of the top layer of our buffer zone on the mouth of the gulf . }
+\end{figure}
+
+The buffer-zone is a rectangle multiplied with the binary mesh-grid for each level. It is located at the west of the straight connecting the gulf to the Ionian sea. It stretches from $i=93$ to $i=128$ for latitude (i.e. 38,9486 \degree N to 38,9773 \degree N for a width of $=1'32"$) and from $j=65$ to $j=85$ for longitude(i.e. 20,7448 \degree E to 20,7684 \degree E for a height of $=1'25"$). The rectangle composes what is here called the "buffer-zone". It was definedhomogeneous along the latitude and following an hyperbolic tangent-like function decreasing toward zero along the longitude.
+
+\begin{center}
+ $Buffer(i,j)= \frac{1}{2 C_t} \cdot (1+ tan(\frac{75-i}{10})) $
+\end{center} 
+with $C_t$ the number of days (in seconds) on which the tracer damping occurs. In our case we chose $C_t=5$ days.
+
+As it is multiplied with the binary mesh-grid at each level. The buffer-zone has to be modified if the number of layers of the simulation is changed. 
+The resulting input file was named resto.nc. To reduce the memory usage when dealing with several experiments on a same configuration it is stored on the experiment's parent directory (\path{/<path>/NEMOGCM/CONFIG/NAME_OF_CONFIG/INPUT<number_of_layer>/resto.nc}).To use the buffer-zone, the tradmp part of the namelist\_cfg file had to be modified.
+
+
+So far, the buffer-zone was configured to deal with the tracers but not with the sea surface height. This is the next big step required to have a fully working physical simulation of the gulf. %This will be addressed in the next section.
+
+%\subsection{The SSH Buffer Zone :}
+%Rewrite this part.
+
+\chapter{Preparing the input data}
+
+\section{T and S input fields}
+
+The spin-up phase of the model starts with the ocean at rest with initialization fields of Temperature and Salinity provided by the user. 
+The input fields were created from the CTD profiles produced during a sampling campaign that took place in 1987. During that year, 191 stations were made and data are available for the months of February, May, July and November 1987. 
+
+For the months not covered by the sampling data, the input field from the previous month was used (ex: February T and S fields for the month of March). A better approach was started : to linearly interpolate (along the time variable) the fields between two cruises. For example interpolate the March and April fields using the February and May data, assuming a linear variation of the temperature and salinity. 
+
+
+
+The Figure\ref{fig:Feb_stations} is a map of all the station carried out for the month of February. 
+
+
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/cruise/Fev_Stations.png}
+\caption{\label{fig:Feb_stations}Map of all the 46 profile stations carried out in February 1987.}
+\end{figure}
+
+\begin{figure}[H]
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Fev_Tsurf_natcol.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Fev_Ssurf_natcol.png}
+	\end{minipage}
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/May_Tsurf_natcol.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/May_Ssurf_natcol.png}
+	\end{minipage}
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Jul_Tsurf_natcol.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Jul_Ssurf_natcol.png}
+	\end{minipage}
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Nov_Tsurf_natcol.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Nov_Ssurf_natcol.png}
+	\end{minipage} 
+   
+   \caption{\label{fig:profiles_SST_SSS_natcol} SST (left) nd SSS (right)  in the Gulf according to the profile data from 1987 cruise. (line1 = Feb, line2 = May, line3 = July, line4 = November.)}
+\end{figure}
+
+The inflence of the Arachthos river on the surface salinity can be seen on the Figure \ref{fig:profiles_SST_SSS_colorbar}. The influence is small on February, but on May nearly half of the Eastern part of the Gulf surface dropped from around 30 PSU in February to around 20 PSU in May.
+
+\begin{figure}[H]
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Fev_Tsurf.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Fev_Ssurf.png}
+	\end{minipage}
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/May_Tsurf.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/May_Ssurf.png}
+	\end{minipage} 
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Jul_Tsurf.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Jul_Ssurf.png}
+	\end{minipage} 
+	\begin{minipage}[h!]{1\linewidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Nov_Tsurf.png}
+		\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Nov_Ssurf.png}
+	\end{minipage} 
+   \caption{\label{fig:profiles_SST_SSS_colorbar} SST (left) nd SSS (right)  in the Gulf according to the profile data from 1987 cruise. (line1 = Feb, line2 = May, line3 = July, line4 = November.) Plotted with the same colorbar.}
+\end{figure}
+
+After May, the salinity of the gulf increases. It may be partly due to an inflow of water from the Ionian sea, as the sharp gradient in the straight indicates. 
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Fev_pTsection_natcol.png}
+	\includegraphics[width=0.4\textwidth]{img//cruise/natcol/Fev_Ssection_natcol.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/May_pTsection_natcol.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/May_Ssection_natcol.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Jul_pTsection_natcol.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Jul_Ssection_natcol.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Nov_pTsection_natcol.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/natcol/Nov_Ssection_natcol.png}
+   \end{minipage} 
+   
+   \caption{\label{fig:profiles_Section_natcol} Temperature and Salinity Sections in the Gulf according to the profile data from 1987 cruise. (Left = Temperature , Right = Salinity -- From top to bottom line : Feb., May, July, Nov.) Local features of each month of data can be seen.}
+\end{figure}
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Fev_pTsection.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Fev_Ssection.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/May_pTsection.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/May_Ssection.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Jul_pTsection.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Jul_Ssection.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Nov_pTsection.png}
+	\includegraphics[width=0.4\textwidth]{img/cruise/colorbar/Nov_Ssection.png}
+   \end{minipage} 
+   
+   \caption{\label{fig:profiles_Section_colorbar} Temperature and Salinity Sections in the Gulf according to the profile data from 1987 cruise. (Left = Temperature , Right = Salinity -- From top to bottom line : Feb., May, July, Nov.) Plotted with the same colorbar. The evolution of the stratification throughout the year can be seen.}
+\end{figure}
+
+At first, a layer by layer interpolation based on Voronoi diagrams to create the input Temperature and Salinity fields was planned. Unfortunately, the implementation of the Voroinoi diagrams was not successful. As a consequence, a layer-average value for Temperature and Salinity as input fields was prefered. The layer by layer approach is important because of the stratified structure of the gulf. The homogeneous value is acceptable because there are no extremely important differences between the different areas of the basin. The consequence may be a slightly longer spin-up phase as we start slightly further from the equilibrium. 
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\textwidth]{img/voronoi.jpg}
+\caption{\label{fig:VORONOI}Voronoi Diagram of the February stations. Tracer values were supposed to be constant on the areas delimited by the red vertices and then linearly interpolated. The creation of input fields with this method was not successful.}
+\end{figure}
+
+%\begin{figure}[!h]
+%\centering
+%\includegraphics[width=0.5\textwidth]{img/empty.jpg}
+%\caption{\label{fig:TProfile}Temperature Section from the 1987 campaign. (a) February, (b) XXX, (c) XXX, (d) XXX .}
+%\end{figure}
+%
+%\begin{figure}[!h]
+%\centering
+%\includegraphics[width=0.5\textwidth]{img/empty.jpg}
+%\caption{\label{fig:SProfile}Salinity Section from the 1987 campaign. (a) February, (b) XXX, (c) XXX, (d) XXX .}
+%\end{figure}
+
+\newpage 
+\section{Input and forcing Data}
+\subsection{Interpolation of Meteorological Data}
+List of different Data used : 
+- ECMWF data
+- T and S profiles from 1987
+- river data
+- Buffer Zone
+
+
+
+The meteorological forcing is implemented through the Bulk formulation of NEMO. More precisely, the MFS (Mediterranean Forecasting System) bulk formulae was used to deal with the ECMWF forcing meteorological fields.  
+The MFS formulae require seven input fields : the Zonal and the Meridional component of the 10 meters wind (in $ms^{-1}$), the total cloud cover (in \%), the 2 meters Air Temperature (in Kelvin), the 2 meters Dew Point Temperature (in Kelvin), the Total Precipitations (in $kg\cdot m^{-2}\cdot s^{-1}$) and the Mean Sea Level Pressure (in Pa). 
+
+
+
+As mentioned in \cite{Madec_Bk08}, the wind stress computation "uses a drag coefficient computed according to Hellerman and Rosenstein [1983] \cite{WindStress}. "
+It should be mentionned that the solar radiation is not directly provided. Instead, NEMO computes  it using the cloud cover and "by means of an astronomical formula" \cite{reed1977estimating}.
+ 
+"The net long-wave radiation flux [Bignami et al. 1995] is a function of air temperature, sea-surface temperature, cloud cover and relative humidity."
+
+"Sensible heat and latent heat fluxes are computed by classical bulk formulae  parameterised  according  to  Kondo  [1975]."
+
+The Figure \ref{fig:ECMWF_Forcing} shows a plot of theese parameters. We have data every three hours on the area covered by our grid. A linear interpolation of the raw data was manually inplemented and the units of a few variables had to converted for the inputs to be usable by NEMO. 
+
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=1\textwidth]{img/TS_ecmwf1.png}
+   \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+	\centering
+	\includegraphics[width=1\textwidth]{img/TS_ecmwf2.png}
+   \end{minipage} 
+  
+\caption{\label{fig:ECMWF_Forcing}ECMWF time series.}
+\end{figure}
+
+\subsection{Rivers}
+Amvrakikos Gulf receives the water of two main rivers, both on its north bank. Louros is the smallest one, located just west of the westernmost lagoon. It is less than 100 meters wide and thus is  represented by only one pixel on the grid. The Arachthos, on the North East side of the gulf, is wider: about 280 meters at its mouth for two meters of depth. We used three pixels to represent it. By default the Louros is set to be one meter deep.
+The table \ref{Rivers_summary} sums up some characteristics of the two rivers.
+
+\begin{table}[!h]
+\begin{center}
+  \begin{tabular}{| l | c | l| }
+    \hline
+      & Louros & Arachthos \\ \hline
+    Latitude & 39.047134 & 39.017475\\ \hline
+    Longitude  & 20.778454 & 21.049198\\ \hline
+    (i,j) & (99,212) & (324,177)\\ \hline
+    Feb. outflow Magnitude  & $\simeq$ 18 $m^3 /s$ & $\simeq$ 31.4 $m^3 /s$\\ \hline
+	Width  & $\leq$100m &	$\simeq$ 280m\\ \hline
+	Depth  & $\leq$1m & $\simeq$ 2 m\\
+            
+    \hline
+  \end{tabular}
+\caption{Summary of the two rivers characteristics}
+\label{Rivers_summary}
+\end{center}
+\end{table}
+
+
+
+ The sea-surface-height (ssh) buffer-zone is the limit of our progress in our modeling process of Avrakikos. It is the next step to be completed in order to be able to run longer simulations. There seem to be good chances that once this buffer-zone limit is dealt with there will be no more major issues preventing year long simulations. Indeed as mentioned earlier, the Amvrakikos gulf is a semi-enclosed basin with inflows of water from the rain and the two rivers Arachthos and Louros. There is also evaporation, mainly during the summer. It is computed by the bulk MFS code, thanks to the cloud coverage, the 2 meters dewpoint temperature, and astronomical parameters. The evaporation timeseries were easily accessible because of the astronomical component of the MFS. ECMWF data can be used as a proxy to have a coarse view of what is happening in the gulf.
+ 
+ \begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=1\textwidth]{img/river_precipitation_timeseries.jpg}
+   \end{minipage}
+%  \begin{minipage}[h!]{1\linewidth}
+%   \centering
+%   \includegraphics[width=0.4\textwidth]{img/empty.jpg}
+%  \end{minipage}
+  \caption{\label{fig:tp_river_TimeSeries}Time series for the river outflow and precipitations for the year 1987.}
+\end{figure}
+
+The time series from Fig. \ref{fig:tp_river_TimeSeries}, combined with the analysis of the salinity in the stations from 1987 outside the gulf showed in Fig.	 \ref{fig:profiles_SST_SSS_natcol} indicate that there is most probably an outflow of water from the gulf during winter (nearby Ionian Sea surface salinity decreases) whereas, there is an inflow of water during  summer.
+
+Two series of steps are to be followed in parallel to incrementally set up the ssh-buffer-zone : 
+\begin{itemize}
+\item [a.] allow water to go in and out by damping the buffer-zone ssh to zero.
+\item [b.] compute a climatology ssh on the nearby Ionian Sea thanks to Copernicus data and replace the former zero by its values (but we should keep in mind that we have been advised to be cautious with Copernicus data so close from the shore).
+\item [c.] find data from local buoy or local measurement of the ssh near the exit of the gulf to replace the Copernicus data
+\item [d.] assess the influence of tides for our ssh damping. Maybe some data can be found thanks to Patras or Igouenitsa harbours. Though the Mediterranean Sea tides are relatively small, assessing the influence of tides in the gulf requires to have the proper frequency for the input of the restoration field. 
+ \end{itemize}
+ 
+Meanwhile the characteristics of the water coming in the gulf from the Ionian Sea during the summer have to be checked :
+\begin{itemize}
+\item[1.] As a first approximation, not to worry about this issue, we can put an average value for all the parameters equally computed from the Copernicus data for example. Once it works with constant values, we can 
+\item[2.] linearly interpolate (in time) the parameters values from the nearest 1987 cruise's station for the summer months (May, July until November)
+\item[3.] look for more precise data. A nearby mooring would be the best to asses the temperature and salinity values all along the year.
+\end{itemize}
+  
+\section{Momentum Flux}
+
+
+Momentum computed from the windstress.  
+
+%TEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTE
+ TEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTETEXTE
+
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=1\textwidth]{img/WindStress.png}
+   \end{minipage}
+  \caption{\label{fig:Heat Flux}Time series for the average heat fluxes in February 1987 over Amvrakikos, computed by our model.}
+\end{figure}
+
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=1\textwidth]{img/UWindStress22Fev.png}
+    \includegraphics[width=1\textwidth]{img/VWindStress22Fev.png}
+   \end{minipage}
+  \caption{\label{fig:UV_WindStress} Wind stress along i and j axis for the 22 Feb. 1987. It is a representative example of the trend for February.}
+\end{figure}
+
+The wind stress is positive along the j-axis for the whole month of February. That is to says, winds induce a northward current on the gulf. 
+Along the i-axis, the wind stress is mostly negative, therefore toward the West, but much smaller than the wind stress along the j-axis. An average about $0.4\cdot 10^{-4}$ for i vs $1.5\cdot 10^{-3}$ for j.
+
+Moreover, it can be seen in Fig \ref{fig:V_WindStress_Lagoons} that the Wind stress appears to be twice as strong in the North lagoon than on the deeper parts ofthe Gulf.
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+    \includegraphics[width=1\textwidth]{img/VWindStress22Fev_Lagoons.png}
+   \end{minipage}
+  \caption{\label{fig:V_WindStress_Lagoons} Wind stress along i and j axis for the 22 Feb. 1987. It is a representative example of the trend for February.}
+\end{figure}
+
+
+\section{Heat Flux}
+%COPERNICUS
+%Lat : 38.8 to 39.15
+%Lon : 20.65 to 21.2
+%
+%For initial TnS
+%
+%Poor results == > Changed to use data from the profiles of 1987.
+
+To study the heat fluxes, we uses the output fields from our simulations. 
+
+
+
+Net Heat flux : \url{http://oaflux.whoi.edu/descriptionheatflux.html}
+ 
+ $Q_net = SW- LW - LH - SH. $
+ 
+where SW denotes net downward shortwave radiation, LW net upward longwave radiation, LH latent heat flux, and SH sensible heat flux. The unit is W/m2. 
+
+Qns = sum of sensible (SH), latent (LH) and long wave (LW) heat fluxes plus the heat content
+of the mass exchange with the atmosphere and sea-ice)
+
+Qsr = solar heat flux = SW = net downward shortwave 
+
+
+ 
+ \begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=1\textwidth]{img/Heat_Flux.jpg}
+   \end{minipage}
+  \caption{\label{fig:Heat Flux}Time series for the differnet Energy Fluxes computed by our model.}
+\end{figure}
+
+
+\chapter{Model Results}
+
+
+\section{The model Spin-up}
+Before analyzing any results from the simulations, the success of the run of the simulation has to be verified. 
+
+The first time steps of the model is called the spin-up phase. It is the transitory regime of a dynamic system. For the global ocean it lasts for few millenia, but the gulf modeled here is much smaller. Therefore it is expected to be quick. To put it differently, it can be understood as the time required by our model to be in dynamic equilibrium. This time can be estimated by computing the theoretical time a droplet of water stays in the Gulf.
+
+Looking at the output Longitudinal Velocity at the surface (U), it seems to last between 4 and 5 days.
+
+An first theoretical estimation of this time is done as follow.
+The volume of the Gulf is requiered. A pixel represents a square of 103.14 meters in longitude and 97.18 meters in latitude. This, multiplied on each cell by the local depths gives us an estimation of the volume  : 
+\begin{center}
+
+$V_{Total}=  \sum_{i,j} Depth(i,j) * 97.18*103.14 =  9.7684e+09 m^3$
+
+\end{center}
+
+Next is the average input of water in the Gulf. Using only the data from the rivers and precipitation (as evaporation data is implicit in the Bulk MFS formulation), an average of 0.7309 mm of precipitation per day over the Gulf area is found. This could be slightly increased as the simulations starts in Feruary where the rains ares much more frequent. 
+ 
+The gulf surface is approximately $4.7067e+08 m^2$. Therefore an average precipitation of $344012.703 m^3/day$ is found in the gulf. 
+
+For the rivers, an average of $49.16 m^3/s$ for Arachthos and $18.62 m^3/s$ for Louros was measured.
+
+
+With these data, a spin up phase lasting about 1500 days as found. This is clearly much longer than what is seen on the simulations. The averages previously done may end up in a slight over-estimation of this time but does not explain such a big difference. 
+
+An other hypothesis to reduce this spin up phase time is due to the stratified structure of our Gulf. As the mixing between the top layers and the deeper ones is very week, we can assume that the volume of water to consider is only the one of the top layer. 
+
+According to Fig. \ref{fig:profiles_Section_colorbar}, the top layer is about 6 meters thick. 
+Using only the top layer, a volume of $V = 2.2129e+09 m^3 $ and a spin up time of about 357 days is obtained. 
+
+This is a maximum for the spin up phase of the simulation (for the top-layer). Its value is much bigger than what is observes on the simulations. This might be due to a misuse of the input data for our computations.
+
+
+
+\section{Temperature}
+
+Several features are easy to see on the output temperature fields. First, a nychthemeral (day/night) variation of the surface temperature of the Gulf is showed in Figure \ref{fig:T_results_nychthemeral}. SST gets down at night and up during the day. On the 15th of February the day/night temperature variation amplitude is about $2.5 \degree$ C. On the 28th of February, the difference between day and night lightly increased and is about $3 \degree$ C.
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SST_3am.png}
+   \includegraphics[width=0.4\textwidth]{img/SST2_3am.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SST_3pm.png}
+   \includegraphics[width=0.4\textwidth]{img/SST2_3pm.png}
+  \end{minipage}
+     \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SST_ND.png}
+   \includegraphics[width=0.4\textwidth]{img/SST2_ND.png}
+  \end{minipage}
+ \caption{\label{fig:T_results_nycthemeral}Observation of nycthemeral variations in SST on the 15th (right) and on the 28th of Feb.(right) (line1 : 3am - line2 : 3pm - line3 : difference}
+\end{figure}
+
+A SST increase trend is also witnessed during the month of simulation (Figure \ref{fig:T_results_GlobIncrease}). This is coherent with the fact that we simulate the end of the winter/beginning of spring. Thus the temperature increase as the atmospheric temperature  gets more important. 
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SST_5th.png}
+   \includegraphics[width=0.4\textwidth]{img/SST_28th.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SST_Increase.png}
+  \end{minipage}
+ \caption{\label{fig:T_results_GlobIncrease}Global trend in warming water (left = 5 of February, 12 am. , right = 28th of Feb. 12 am.)}
+\end{figure}
+
+\section{Salinity}
+
+Regarding the salinity, there is no clear daily variation. On the other hand there is a  slight decrease in the global salinity. 
+
+This decrease is more important on the North banks of the Gulf, particularly in the shallow lagoons where the difference can be up to 8 PSU. 
+We can assume that some of this decrease is due to the presence of the rivers, particularly the decrease in salinity near the mouth of the Arachthos, but there are no current features that conquer with this. Maybe the rivers set up has to be improved in order to be able to visualize their influence more clearly.
+
+
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SSS_5th.png}
+   \includegraphics[width=0.4\textwidth]{img/SSS_28th.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/SSS_decrease.png}
+  \end{minipage}
+ \caption{\label{fig:S_results_GlobDecrease}Global trend of decreasing salinity (left = 5 of February, 12 am. , right = 28th of Feb. 12 am.)}
+\end{figure}
+
+	
+There is also nearly no variation when proceed to the deeper layers (deeper than 5 meters). Therefore, the stratified structure of the gulf is not changed during our short simulation. This is coherent with the profile data where it is seen that the stratications does not decrease before the end of the summer (Fig. \ref{fig:profiles_Section_colorbar}).
+
+
+
+\section{Currents}
+
+The plots on Fig. \ref{fig:AMM12_SST}yers}, show zonal and meridional currents at different depths on the $22^{nd} $ of February. This date is relevant because it is after the Gulf spin-up. 
+It can be seen on the surface that there is some kind of cyclonic current because the zonal speed is positive on the South and negative on the North bank. The meridional speed confirms this assumption. It is the most obvious on the 5th layer (3.64 meters deep)  where the alternation between positive and negative values confirm the presence of these cyclonic cells.
+
+However, it should be noticed that the speeds are rather small : about $2 cm/s$ on these cell. 
+\begin{figure}[H]
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/U1.png}
+   \includegraphics[width=0.4\textwidth]{img/V1.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/U5.png}
+   \includegraphics[width=0.4\textwidth]{img/V5.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/U10.png}
+   \includegraphics[width=0.4\textwidth]{img/V10.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/U15.png}
+   \includegraphics[width=0.4\textwidth]{img/V15.png}
+  \end{minipage}
+   \begin{minipage}[h!]{1\linewidth}
+   \centering
+   \includegraphics[width=0.4\textwidth]{img/U20.png}
+   \includegraphics[width=0.4\textwidth]{img/V20.png}
+  \end{minipage}
+ \caption{\label{fig:UV_Layers}U and V currents on the differents layers of the Gulf on the $22^{nd}$ of Feb.}
+\end{figure}
+
+%%
+%%
+%%
+%%\begin{figure}[H]
+%%   \begin{minipage}[h!]{1\linewidth}
+%%   \centering
+%%   \includegraphics[width=0.4\textwidth]{img/V_surf_22Fev.png}
+%%   \includegraphics[width=0.4\textwidth]{img/V_second_22Fev.png}
+%%  \end{minipage}
+%%%   \begin{minipage}[h!]{1\linewidth}
+%%%   \centering
+%%%   
+%%%   \includegraphics[width=0.4\textwidth]{img/U_22Fev.png}
+%%%  \end²{minipage}
+%% \caption{\label{fig:V_Currents}V currents on the first and second layer of the Gulf on the $22^{nd}$ of Feb.}
+%%\end{figure}
+
+
+\section{Future work with the simulation}
+
+The next step for the simulation is to solve the sea surface elevation issues. Indeed, the Amvrakikos Gulf is a close basin and the ssh damping with the buffer-zone was not implemented. There seem to be good chances that once this buffer-zone limit is dealt with there will be no more major issues preventing year long simulations.
+Untill then, all the outflow from the rivers and from the precipitations that accumulate in the basin, thus the SSH increases forces the simulation to stop when reaching a limit (10 meters at the end of march).
+
+Having a sea surface height damping in the buffer-zone could also force a different circulation in the Gulf due to the exit of water. Thus our results for the few months of simulations are to be taken cautiously.
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=0.8\textwidth]{img/SSH_Increase.png}
+  \caption{\label{fig:SSH_Increase}Linear increase of the SSH over one month}
+\end{figure}
+
+%Citation premiere : NEMO BOOK  \cite{Madec_Bk08} .  \\
+%Deuxieme citation : PISCES \cite{PISCES} . \newline
+%Citation trois :  Lake Michigan : \cite{Beletsky01modelingcirculation} pour la redaction. \\
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Exemple d'entrée dans le glossaire %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newglossaryentry{FFT}
+%{
+%  name=FFT,
+%  description={Fast Fourier Transform}
+%}
+%Utilisation de la \gls{FFT}
+
+
+%%%%%%%%%%%%%%
+% CONCLUSION %
+%%%%%%%%%%%%%%
+\chapterb{Conclusion}
+During this internship, we were able to develop, the physical model for the Gulf of Amvrakikos for the first time. We were able to run simulations for nearly two months and analyze the results of these simulations. 
+
+It will be possible to use this work to run full year simulations. Once the results are compared to in-situ data, it will also be possible to start a biogeochemical model of the gulf and finally a biological model. The long term objective of the project being to have a tool to help decision making regarding the conservation in Amvrakikos. 
+
+%How do your results generaly applies
+
+The work we did for Amvrakikos can be applied to other gulfs. Though this would require an important amount of work to adapt the configuration and set the parameters properly. In addition to that, the physics of this gulf is quite different from the other gulfs studied on the \url{https://www.lifewatchgreece.eu/} portal. Indeed as it is semi-enclosed, and it is expected to behave almost like a lake.
+
+
+%outline new research questions, area for future research, or any technical recomandations that your results have suggested.
+
+The next research to be carried out on the modeling of the Gulf are the completion of the physical model, the development of the biogeochemical model and the biological one. In addition, the verification of the results will also be a key step and will require an expert in physical oceanography and modeling. 
+
+
+%%%%%%%%%%%
+% ANNEXES %
+%%%%%%%%%%%
+%\chapter{Annexes}
+%\section{Recap of the modeling choices and the reason why we followed them or aborted them.}
+%%\section{\small\scshape\bfseries Précision et Convergence de l'\index{interpolation} sur la grille}
+%%\section{Stabilité et Convergence des schémas de calcul}
+%\section{The Computer used to run the simulations.}
+
+%%%%%%%%%%%%%%%%%
+% BIBLIOGRAPHIE %
+%%%%%%%%%%%%%%%%%
+%\bibliographystyle{plain} %Ne pas modifier cette ligne
+%\bibliography{biblio} %L'argument doit etre le nom du fichier de la bibliotheque, sans l'extension .bib. Ici, mon fichier est biblio.bib
+
+\bibliographystyle{alpha}
+%\bibliographystyle{abbrv}
+\bibliography{biblio}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LISTE DES FIGURES ET TABLEAUX %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifthenelse{\equal{\enstaLang}{fr}}{
+\renewcommand\listfigurename{Liste des Figures}
+}{}
+\listoffigures
+\listoftables
+
+%%%%%%%%%%%%%%%%%%%%%%
+% INDEX ET GLOSSAIRE %
+%%%%%%%%%%%%%%%%%%%%%%
+% Mode d'emploi à cette adresse %
+% http://www.tuteurs.ens.fr/logiciels/latex/makeindex.html
+% http://www.xm1math.net/doculatex/glossaries.html
+\printindex
+\printglossaries
+
+
+
+\end{document}
