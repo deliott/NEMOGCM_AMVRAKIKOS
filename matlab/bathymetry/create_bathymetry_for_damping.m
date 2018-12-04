@@ -1,11 +1,14 @@
 % This script is creating the 100m bathymetry file for AMVRAKIKOS from the
 % binary files provided by Mamoutos.
+%
 % It supresses the Ionian sea east of the buffer zone
 % 
 % The output file is bathy_meter.nc
 % 
 % It uses the function loadBin.m and suppress_ionan.m
 % 
+% It requieres the file amvrakikos_100m.bin
+%
 % Written by Eliott the 2nd of July 2018
 % 
 
@@ -19,10 +22,10 @@ write_file = true; % true = write the output file.
 display_image = true; % true = display the matlab 3d view of the bathymetry
 
 %% load and put data in shape
-%fileName = '/home/lifewatch-user/working_directory/0530_restart-file/sv03-med-ingv-sal-rean-d_1527675988366_1day.nc';
-%fileName = '/home/lifewatch-user/working_directory/0524_new_test_bath/matlab_0529/myfile0529.nc';
-fileName = '/home/lifewatch-user/working_directory/0524_new_test_bath/matlab_0529/bathy_meter_buffer.nc';
-filename100m = '/home/lifewatch-user/working_directory/mamoutos/test/amvrakikos_100m.bin';
+%fileName = '<path>/0524_new_test_bath/matlab_0529/bathy_meter.nc';
+%filename100m = '<path>/mamoutos/test/amvrakikos_100m.bin';
+fileName = '/home/eliott/PFE/working_directory/0524_new_test_bath/bathymetry_matlab_0529/test_decembre_buffer.nc'
+filename100m = '/home/eliott/PFE/working_directory/mamoutos/test/amvrakikos_100m.bin';
 [lon100m, lat100m, depth100m]= loadBin(filename100m, 514, 270);
 
 lon100m = cast(lon100m(1,:) ,'single');

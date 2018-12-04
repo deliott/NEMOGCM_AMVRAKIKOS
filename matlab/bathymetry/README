@@ -1,5 +1,17 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% OUTPUT : coordinates.nc %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% INPUT :  amvrakikos_100m.bin %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Uses matlab to create the bathymetry file	
+
 Two progrmas in this folder : 
 create_bathymetry.m for configuration without buffer-zone
-
+	It uses the function : loadBin.m
 create_bathymetry_for_damping.m for configuration withs buffer-zone
+	It uses the function : loadBin.m and suppress_ioninan.m
 
+Do not forget to set the <path> of the input and output.
