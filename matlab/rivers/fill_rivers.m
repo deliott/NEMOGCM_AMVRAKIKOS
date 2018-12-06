@@ -18,4 +18,3 @@ function [ field ] = fill_rivers( field, coordinate_list, value1, value2, fill_v
 
 
 end
-
