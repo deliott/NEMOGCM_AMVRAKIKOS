@@ -5,7 +5,7 @@ The current architecture of this repository is :
 
 - Explanation on how to install NEMO on your computer. We did it on a blank Ubuntu 16.04 distribution and on the HCMR zorba CLUSTER.
 
-- Set of all the matlab code used and written to prepare the input data (bathymetry, grid, ECMWf, ... ) to feed nemo to run configurations
+- Set of all the matlab code used and written to prepare the input data (bathymetry, grid, ECMWF, ... ) to feed nemo to run configurations
 
 - All the Fortran modules that were modified from the original files provided with NEMO, as well as the different namelists used and their description.
 
