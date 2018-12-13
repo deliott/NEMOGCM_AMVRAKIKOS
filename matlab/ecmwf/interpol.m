@@ -1,7 +1,15 @@
 function [ interpolated_field] = interpol( field, Xq, Yq, lon, lat )
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
-
+%
+% This function does a 2d linear interpolation at each timestep ofthe fields timeseries.
+%
+%INPUT :
+%      field  = timeserie of ecmwf raw data, thrid dimension is time.
+%      Xq, Yq = meshgrid of longitude and latitdue used in interp2
+%OUTPUT : 
+%      interpolated_field = result of the linear interpolation of dimension x y (grid) and time
+%                           no other coefficients are applied so far.
+%
+%    uses the built-in function interp2
 
 %Layer by layer interpolation
 interpolated_field = zeros(size(Xq,2),size(Xq,1),size(field,3)); % here 319 and 446 and 69 (69=time)
