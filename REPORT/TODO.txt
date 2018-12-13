@@ -1,0 +1,6 @@
+This files contains the list of the things that can be done to improve the report. 
+
+
+
+- explain that ecmwf data comes from inteim datasets, and how we are dealing with accumulated data (total precipitation) 
+  explained in \url{https://confluence.ecmwf.int//pages/viewpage.action?pageId=56658233}
