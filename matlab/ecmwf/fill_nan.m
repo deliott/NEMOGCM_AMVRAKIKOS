@@ -1,6 +1,15 @@
 function [field ] = fill_nan( field )
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%
+% This function fills the nan values from the raw ecmwf timeseries. 
+% It replaces them by the average vlue for the given timestep if it is not a nan
+% else it replaces it by the average ofer all the timesteps
+%
+%INPUT :
+%      field  = timeserie of ecmwf raw data, thrid dimension is time.
+%OUTPUT : 
+%      field = result of the filling of NaN by averae values
+%
+%    uses the built-in function isnan
 
 
 moyenne = mean(mean(mean(field(:,:,:),'omitnan'),'omitnan'),'omitnan');
