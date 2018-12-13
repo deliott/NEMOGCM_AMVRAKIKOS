@@ -85,7 +85,7 @@ for i=1:numel(files)
     u10 = fill_nan(u10);
     v10 = fill_nan(v10);
         %% Convert accumulated data over several time step to accumulation over a single timestep
-    tp_notConverted = tp;
+    %tp_notConverted = tp;
     tp  = convert_accu(tp);
  
     
