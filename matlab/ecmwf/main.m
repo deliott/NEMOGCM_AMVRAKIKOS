@@ -15,13 +15,15 @@ clear;
 close all;
 
 plot_of_data = false; 
-writing_of_data = false; 
+write_bool = true; 
 deal_with_all_files = false ; %false -> for test with only one file
 
 %% load data fron coarse ncdf
 % Read input_file
 
 % file_list = '/home/lifewatch-user/Downloads/PFE/ecmwf_1987_input/input/1987_*.nc' 
+%path = '/media/eliott/Elements/grece/PFE_CLUSTER/ecmwf_1987_input/output/ecmwf_y1987m02.nc';
+%ncdisp(path);
 
 input_dirName  = '/home/eliott/PFE/GITHUB/NEMOGCM_AMVRAKIKOS/matlab/ecmwf/input/';  
 output_dirName = '/home/eliott/PFE/GITHUB/NEMOGCM_AMVRAKIKOS/matlab/ecmwf/output/';  
@@ -96,7 +98,7 @@ for i=1:numel(files)
     tcc_scale_factor = ncreadatt(filename_input,'tcc','scale_factor');
     u10_scale_factor = ncreadatt(filename_input,'u10','scale_factor');
     v10_scale_factor = ncreadatt(filename_input,'v10','scale_factor');
-    tp_scale_factor = ncreadatt(filename_input,'tp','scale_factor');
+    tp_scale_factor  = ncreadatt(filename_input,'tp','scale_factor');
   
     d2m_offset_value = ncreadatt(filename_input,'d2m','add_offset');
     msl_offset_value = ncreadatt(filename_input,'msl','add_offset');
@@ -104,32 +106,44 @@ for i=1:numel(files)
     tcc_offset_value = ncreadatt(filename_input,'tcc','add_offset');
     u10_offset_value = ncreadatt(filename_input,'u10','add_offset');
     v10_offset_value = ncreadatt(filename_input,'v10','add_offset');
-    tp_offset_value = ncreadatt(filename_input,'tp','add_offset');    
+    tp_offset_value  = ncreadatt(filename_input,'tp','add_offset');    
     
+    
+        %% Do the interpolation
+    interp_d2m = interpol(d2m, Xq, Yq, lon, lat);
+    interp_msl = 0.01* interpol(msl, Xq, Yq, lon, lat);
+    interp_t2m = interpol(t2m, Xq, Yq, lon, lat);
+    interp_tcc = 100 * interpol(tcc, Xq, Yq, lon, lat);
+    interp_tp = (1000 / (3 * 3600))*interpol(tp, Xq, Yq, lon, lat);
+    interp_u10 = interpol(u10, Xq, Yq, lon, lat);
+    interp_v10 = interpol(v10, Xq, Yq, lon, lat);
+
 %     figure
 %     surf(u10(:,:,1));
     
 
 %% Daily average
-U10_m = [];
-V10_m = [];
-t2m_m = [];
-    for i=1:((size(u10,3)-1)/8)
-        U10_m = [U10_m,mean2(u10(:,:,(8*i-7):(i*8)))];
-        V10_m = [V10_m,mean2(v10(:,:,(8*i-7):(i*8)))];
-        t2m_m = [t2m_m,mean2(t2m(:,:,(8*i-7):(i*8)))];
-        
-        
-        
-    end
-    
-    U10 = [U10 , U10_m ];
-    V10 = [V10 , V10_m ];
-    T2M = [T2M , t2m_m ];
+% U10_m = [];
+% V10_m = [];
+% t2m_m = [];
+%     for i=1:((size(u10,3)-1)/8)
+%         U10_m = [U10_m,mean2(u10(:,:,(8*i-7):(i*8)))];
+%         V10_m = [V10_m,mean2(v10(:,:,(8*i-7):(i*8)))];
+%         t2m_m = [t2m_m,mean2(t2m(:,:,(8*i-7):(i*8)))];
+%     end
+%     
+%     U10 = [U10 , U10_m ];
+%     V10 = [V10 , V10_m ];
+%     T2M = [T2M , t2m_m ];
 
-    
+%% write the data into the output monthly files.    
+    if write_bool 
+        write_ecmwf;
+    end
 end
 
 if plot_of_data 
-    plot_data
+    plot_data;
 end
+
+
