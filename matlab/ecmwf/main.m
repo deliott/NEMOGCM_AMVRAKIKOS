@@ -1,4 +1,4 @@
-% This matlab script shapes the ecmwf raw data to feed NEMO
+	% This matlab script shapes the ecmwf raw data to feed NEMO
 % 
 % The output file are ecmwf_y1987m**.nc'
 % 
@@ -31,7 +31,7 @@ output_dirName = '/home/eliott/PFE/GITHUB/NEMOGCM_AMVRAKIKOS/matlab/ecmwf/output
 if deal_with_all_files
     files = dir( fullfile(input_dirName,'*.nc') );   % list all *.xyz files
 else 
-    files = dir( fullfile(input_dirName,'y1987m01.nc') ); % uses only one file as input
+    files = dir( fullfile(input_dirName,'y1987m03.nc') ); % uses only one file as input
 end
     files = {files.name}';                      % file names
 
@@ -53,9 +53,9 @@ dx= Dlon/(target_nlon -1);
 [Xq,Yq] = meshgrid(lon_min:dx:lon_max,lat_min:dy:lat_max);
 
 
-U10 =[];
-V10 =[];
-T2M =[];
+% U10 =[];
+% V10 =[];
+% T2M =[];
 
 for i=1:numel(files)
     filename_input = fullfile(input_dirName,files{i});     %# full path to file
@@ -78,7 +78,6 @@ for i=1:numel(files)
     lat(isnan(lat)) = 1.000000020040877e+20 ;
     time(isnan(time)) = max(time) ;
     d2m = fill_nan(d2m);
-    % e = fill_nan(e);
     msl = fill_nan(msl);
     t2m = fill_nan(t2m);
     tcc = fill_nan(tcc);
