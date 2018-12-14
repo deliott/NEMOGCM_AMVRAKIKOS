@@ -1,0 +1,50 @@
+% This docments explain how to download the ecmwf data from the public datasets. 
+
+
+% sudo apt-get install cdo
+%cdo mergetime infile1 infile2 infile3 infile4 outfile
+% https://code.mpimet.mpg.de/projects/cdo/embedded/index.html#x1-930002.2.6
+
+
+% Maybe issue because 1987 01 01 at 00:00 is missing.
+
+#!/usr/bin/env python
+from ecmwfapi import ECMWFDataServer
+server = ECMWFDataServer()
+server.retrieve({
+    "class": "ei",
+    "dataset": "interim",
+    "date": "1987-01-01/to/1987-01-31",
+    "expver": "1",
+    "area": "39.5/20.5/38.5/21.5", 
+    "grid": "0.125/0.125",
+    "levtype": "sfc",
+    "param": "151.128/164.128/165.128/166.128/167.128/168.128/228.128",
+    "step": "3/6/9/12",
+    "stream": "oper",
+    "time": "00:00:00/12:00:00",
+    "type": "fc",
+    "format"    : "netcdf",
+    "target": "test_Janvier1987.nc",
+})
+
+
+#!/usr/bin/env python
+from ecmwfapi import ECMWFDataServer
+server = ECMWFDataServer()
+server.retrieve({
+    "class": "ei",
+    "dataset": "interim",
+    "date": "1987-02-01/to/1987-02-28",
+    "expver": "1",
+    "area": "39.5/20.5/38.5/21.5", 
+    "grid": "0.125/0.125",
+    "levtype": "sfc",
+    "param": "151.128/164.128/165.128/166.128/167.128/168.128/228.128",
+    "step": "3/6/9/12",
+    "stream": "oper",
+    "time": "00:00:00/12:00:00",
+    "type": "fc",
+    "format"    : "netcdf",
+    "target": "test_Fev1987.nc",
+})
