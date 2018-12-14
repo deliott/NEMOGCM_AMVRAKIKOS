@@ -1,4 +1,4 @@
-function [accu_on_time_step] = convert_accu( field )
+function [accu_on_time_step] = convert_accummulations_instantaneous( field )
 %
 % This function deals with accumulation data from ecmwf. (total precipitation)
 % 
@@ -20,23 +20,35 @@ function [accu_on_time_step] = convert_accu( field )
 % 		8*n/86.4 -> convert meters per 3h to kg.m-2.s-1
 
 accu_on_time_step = field;
-time_size= size(field(1,1,:),3);
+%time_size= size(field(1,1,:),3);
+time_step = 1
+%for time_step = 1:8 %time_size 
+         if mod(time_step,4) == 2
+	     time_step
+             accu_on_time_step(:,:,time_step) = field(:,:,time_step) - field(:,:,time_step-1) 
+	elseif mod(time_step,4) == 3
+	      accu_on_time_step(:,:,time_step) = field(:,:,time_step) - field(:,:,time_step-1) ;
+	elseif mod(time_step,4) == 0
+	      accu_on_time_step(:,:,time_step) = field(:,:,time_step) - field(:,:,time_step-1) ;
+	end
 
-for time_step = 1:time_size 
-    %     if mod(time_step,4) == 1
-    %         accu_on_time_step(:,:,time_step) = field(:,:,time_step)* (8/86.4)  ; % from 00:00 to 03:00 and from from 12:00 to 15:00 no calculation required
+
+
+
+%* (8/86.4)  ; % from 00:00 to 03:00 and from from 12:00 to 15:00 no calculation required
     %     else
     % % %    DOESN'T LOOK NECESSARY AFTER ALL (GIVES NEGATIVE VALUES ...)    accu_on_time_step(:,:,time_step) = field(:,:,time_step)  - field(:,:,time_step -1) ;  %% We now have meters per 3 hours. 
     %         accu_on_time_step(:,:,time_step) = accu_on_time_step(:,:,time_step) * (8/86.4);  %% we now have kg.m-2.s-1
     %     end
-    for i=1:size(field,1)
-        for j=1:size(field,2)
-        
-            accu_on_time_step(i,j,time_step) = time_step/i*j;%field(i,j,time_step)* (8/86.4)  ; % from 00:00 to 03:00 and from from 12:00 to 15:00 no calculation required
+  %  for i=1:size(field,1)
+  %      for j=1:size(field,2)
+  %      
+  %          accu_on_time_step(i,j,time_step) = time_step/i*j;%field(i,j,time_step)* (8/86.4)  ; % from 00:00 to 03:00 and from from 12:00 to 15:00 no calculation required
 
-        end
-    end
-end
+%        end
+%    end
+
+%end
 
 end
 
