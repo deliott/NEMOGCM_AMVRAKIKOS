@@ -15,7 +15,7 @@ clear;
 close all;
 
 plot_of_data = false; 
-write_bool = true; 
+write_bool = ; 
 deal_with_all_files = false ; %false -> for test with only one file
 
 %% load data fron coarse ncdf
@@ -31,7 +31,7 @@ output_dirName = '/home/eliott/PFE/GITHUB/NEMOGCM_AMVRAKIKOS/matlab/ecmwf/output
 if deal_with_all_files
     files = dir( fullfile(input_dirName,'*.nc') );   % list all *.xyz files
 else 
-    files = dir( fullfile(input_dirName,'y1987m03.nc') ); % uses only one file as input
+    files = dir( fullfile(input_dirName,'y1987m02.nc') ); % uses only one file as input
 end
     files = {files.name}';                      % file names
 
@@ -86,7 +86,9 @@ for i=1:numel(files)
     v10 = fill_nan(v10);
         %% Convert accumulated data over several time step to accumulation over a single timestep
     %tp_notConverted = tp;
-    tp  = convert_accu(tp);
+    %tp  = convert_accu(tp);
+    tp = convert_accummulations_instantaneous(tp);
+%
  
     
 
@@ -110,9 +112,9 @@ for i=1:numel(files)
     
         %% Do the interpolation
     interp_d2m = interpol(d2m, Xq, Yq, lon, lat);
-    interp_msl = 0.01* interpol(msl, Xq, Yq, lon, lat);
+    interp_msl = 0.01* interpol(msl, Xq, Yq, lon, lat); % to convert Pa into hPa
     interp_t2m = interpol(t2m, Xq, Yq, lon, lat);
-    interp_tcc = 100 * interpol(tcc, Xq, Yq, lon, lat);
+    interp_tcc = 100 * interpol(tcc, Xq, Yq, lon, lat); %to convert [0-1] coefficient into percentage. 
     interp_tp = (1000 / (3 * 3600))*interpol(tp, Xq, Yq, lon, lat);
     interp_u10 = interpol(u10, Xq, Yq, lon, lat);
     interp_v10 = interpol(v10, Xq, Yq, lon, lat);
