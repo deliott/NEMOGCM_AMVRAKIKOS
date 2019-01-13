@@ -10,3 +10,12 @@ The current architecture of this repository is :
 - All the Fortran modules that were modified from the original files provided with NEMO, as well as the different namelists used and their description.
 
 - The scientific report written as a conclusion of this internship.
+
+
+
+#List of things to do 
+1) Instalation tutorial : 
+  - add the arch files ( .fcm, .env, .path) 
+  
+2) Input fields
+  - correct the ecmwf total precipitations input.
